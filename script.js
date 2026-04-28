@@ -202,7 +202,7 @@ function initContactForm() {
 
         btn.textContent = '✔ mensagem enviada!';
         btn.style.opacity = '1';
-        btn.style.background = '#16a34a';
+        btn.style.background = '#255AE6';
 
         setTimeout(() => {
             btn.textContent = original;
