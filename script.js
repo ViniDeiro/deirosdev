@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initFilters();
     initContactForm();
     initSmoothScroll();
+    initConversionLayer();
 });
 
 /* ── Navigation ── */
@@ -222,4 +223,44 @@ function initSmoothScroll() {
             if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
     });
+}
+
+/* ── Conversion Layer ── */
+function initConversionLayer() {
+    initSmartOffer();
+}
+
+function initSmartOffer() {
+    const offer = document.getElementById('smartOffer');
+    const close = document.getElementById('smartOfferClose');
+    if (!offer || !close) return;
+
+    const storageKey = 'deiros-smart-offer-dismissed';
+    const dismissed = sessionStorage.getItem(storageKey) === 'true';
+    if (dismissed) return;
+
+    let shown = false;
+    const showOffer = () => {
+        if (shown) return;
+        shown = true;
+        offer.hidden = false;
+    };
+
+    const dismissOffer = () => {
+        offer.hidden = true;
+        sessionStorage.setItem(storageKey, 'true');
+        document.removeEventListener('mouseout', handleExitIntent);
+    };
+
+    const delay = 18000;
+    const timer = window.setTimeout(showOffer, delay);
+
+    const handleExitIntent = (event) => {
+        if (event.clientY > 12 || shown) return;
+        window.clearTimeout(timer);
+        showOffer();
+    };
+
+    close.addEventListener('click', dismissOffer);
+    document.addEventListener('mouseout', handleExitIntent);
 }
