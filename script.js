@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initContactForm();
     initSmoothScroll();
     initConversionLayer();
+    initCoreWebVitals();
+    registerServiceWorker();
 });
 
 /* ── Navigation ── */
@@ -44,15 +46,27 @@ function initMobileMenu() {
     burger.addEventListener('click', () => {
         burger.classList.toggle('active');
         links.classList.toggle('active');
-        document.body.style.overflow = links.classList.contains('active') ? 'hidden' : '';
+        const isOpen = links.classList.contains('active');
+        burger.setAttribute('aria-expanded', String(isOpen));
+        document.body.style.overflow = isOpen ? 'hidden' : '';
     });
 
     links.querySelectorAll('.nav__link').forEach(link => {
         link.addEventListener('click', () => {
             burger.classList.remove('active');
             links.classList.remove('active');
+            burger.setAttribute('aria-expanded', 'false');
             document.body.style.overflow = '';
         });
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape' || !links.classList.contains('active')) return;
+        burger.classList.remove('active');
+        links.classList.remove('active');
+        burger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+        burger.focus();
     });
 }
 
@@ -178,6 +192,7 @@ function initFilters() {
 function initContactForm() {
     const form = document.getElementById('contactForm');
     const btn = document.getElementById('submitBtn');
+    const status = document.getElementById('formStatus');
     if (!form) return;
 
     // Phone mask
@@ -198,18 +213,21 @@ function initContactForm() {
         btn.textContent = 'enviando...';
         btn.disabled = true;
         btn.style.opacity = '0.6';
+        if (status) status.textContent = 'Enviando mensagem.';
 
         await new Promise(r => setTimeout(r, 1800));
 
         btn.textContent = '✔ mensagem enviada!';
         btn.style.opacity = '1';
         btn.style.background = '#255AE6';
+        if (status) status.textContent = 'Mensagem enviada com sucesso.';
 
         setTimeout(() => {
             btn.textContent = original;
             btn.disabled = false;
             btn.style.background = '';
             form.reset();
+            if (status) status.textContent = '';
         }, 3000);
     });
 }
@@ -263,4 +281,65 @@ function initSmartOffer() {
 
     close.addEventListener('click', dismissOffer);
     document.addEventListener('mouseout', handleExitIntent);
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !offer.hidden) dismissOffer();
+    });
+}
+
+/* ── Core Web Vitals ── */
+function initCoreWebVitals() {
+    if (!('PerformanceObserver' in window)) return;
+
+    const metrics = {
+        lcp: 0,
+        cls: 0,
+        fid: 0,
+    };
+
+    try {
+        const lcpObserver = new PerformanceObserver((entryList) => {
+            const entries = entryList.getEntries();
+            const lastEntry = entries[entries.length - 1];
+            if (lastEntry) metrics.lcp = lastEntry.startTime;
+        });
+        lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
+
+        const clsObserver = new PerformanceObserver((entryList) => {
+            for (const entry of entryList.getEntries()) {
+                if (!entry.hadRecentInput) metrics.cls += entry.value;
+            }
+        });
+        clsObserver.observe({ type: 'layout-shift', buffered: true });
+
+        const fidObserver = new PerformanceObserver((entryList) => {
+            for (const entry of entryList.getEntries()) {
+                metrics.fid = entry.processingStart - entry.startTime;
+            }
+        });
+        fidObserver.observe({ type: 'first-input', buffered: true });
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                window.__coreWebVitals = metrics;
+                console.info('Core Web Vitals', {
+                    LCP: `${Math.round(metrics.lcp)}ms`,
+                    CLS: Number(metrics.cls.toFixed(3)),
+                    FID: `${Math.round(metrics.fid)}ms`,
+                });
+            }, 0);
+        });
+    } catch (error) {
+        console.warn('Core Web Vitals monitoring unavailable.', error);
+    }
+}
+
+/* ── PWA ── */
+function registerServiceWorker() {
+    if (!('serviceWorker' in navigator)) return;
+
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js').catch((error) => {
+            console.warn('Service worker registration failed.', error);
+        });
+    });
 }

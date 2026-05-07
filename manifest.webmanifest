@@ -1,0 +1,20 @@
+{
+  "name": "Deiro's Dev",
+  "short_name": "Deiro's Dev",
+  "description": "Portfolio da Deiro's Dev com servicos, projetos e canais de contato rapido.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0A0A0A",
+  "theme_color": "#0A0A0A",
+  "lang": "pt-BR",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "logo transparente.png",
+      "sizes": "413x224",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

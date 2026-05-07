@@ -6,6 +6,13 @@
     <title>Deiro's Dev | Codificando o futuro, realizando seus sonhos</title>
     <meta name="description" content="Desenvolvimento de software sob medida. Sites, apps, sistemas — com código limpo e design que converte. Conheça nosso portfólio.">
     <meta name="keywords" content="desenvolvimento web, software, Deiro's Dev, freelancer, programador">
+    <meta name="theme-color" content="#0A0A0A">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Deiro's Dev">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="apple-touch-icon" href="logo transparente.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -20,7 +27,7 @@
     <nav class="nav" id="nav">
         <div class="nav__inner">
             <a href="#" class="nav__logo" id="navLogo" aria-label="Deiro's Dev">
-                <img src="logo transparente.png" alt="Deiro's Dev" class="nav__logo-image">
+                <img src="logo transparente.png" alt="Deiro's Dev" class="nav__logo-image" width="413" height="224" fetchpriority="high" decoding="async">
             </a>
             <div class="nav__links" id="navLinks">
                 <a href="#home" class="nav__link" data-section="home">home</a>
@@ -32,7 +39,7 @@
             <a href="#contact" class="nav__cta">
                 <span class="nav__cta-arrow">→</span> entre em contato
             </a>
-            <button class="nav__burger" id="navBurger" aria-label="Menu">
+            <button class="nav__burger" id="navBurger" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
                 <span></span><span></span>
             </button>
         </div>
@@ -226,127 +233,104 @@
             <div class="work__filters">
                 <button class="work__filter active" data-filter="all">todos</button>
                 <button class="work__filter" data-filter="web">web</button>
-                <button class="work__filter" data-filter="mobile">mobile</button>
-                <button class="work__filter" data-filter="sistema">sistema</button>
+                <button class="work__filter" data-filter="branding">branding</button>
+                <button class="work__filter" data-filter="ecommerce">e-commerce</button>
             </div>
 
             <div class="work__grid" id="workGrid">
                 <!-- Project 1 -->
-                <article class="project" data-category="mobile" data-aos>
+                <article class="project" data-category="web" data-aos>
                     <div class="project__preview">
-                        <img src="assets/portfolio-ecommerce.png" alt="App E-commerce">
-                        <div class="project__overlay">
-                            <span class="project__overlay-text">ver detalhes →</span>
-                        </div>
+                        <img src="assets/rpx.png" alt="RPX - Ranking e premiacoes" loading="lazy" decoding="async">
+                        <a href="https://rpx-w2oo.vercel.app/" target="_blank" rel="noopener" class="project__overlay">
+                            <span class="project__overlay-text">visitar projeto →</span>
+                        </a>
                     </div>
                     <div class="project__info">
                         <div class="project__meta">
-                            <span class="project__cat">mobile app</span>
-                            <span class="project__year">2025</span>
+                            <span class="project__cat">plataforma web / esports</span>
+                            <span class="project__year">live</span>
                         </div>
-                        <h3 class="project__title">E-commerce Premium</h3>
-                        <p class="project__desc">App de e-commerce com UX imersiva, pagamento integrado e painel admin.</p>
+                        <h3 class="project__title">RPX - Ranking & Premiações</h3>
+                        <p class="project__desc">Plataforma para torneios e apostas em Free Fire com ranking, premiações reais, Pix, cripto e dashboard em tempo real.</p>
                         <div class="project__tech">
-                            <code>react-native</code>
-                            <code>node.js</code>
-                            <code>stripe</code>
+                            <code>next.js</code>
+                            <code>postgresql</code>
+                            <code>socket.io</code>
                         </div>
-                        <a href="#contact" class="project__cta">Quero um projeto assim →</a>
+                        <a href="https://rpx-w2oo.vercel.app/" target="_blank" rel="noopener" class="project__cta">Ver projeto online →</a>
                     </div>
                 </article>
 
                 <!-- Project 2 -->
-                <article class="project project--wide" data-category="web" data-aos>
+                <article class="project project--wide" data-category="branding" data-aos>
                     <div class="project__preview">
-                        <img src="assets/portfolio-dashboard.png" alt="Dashboard Analytics">
-                        <div class="project__overlay">
-                            <span class="project__overlay-text">ver detalhes →</span>
-                        </div>
+                        <img src="assets/buledecha.png" alt="Bule de Cha" loading="lazy" decoding="async">
+                        <a href="https://traeepjmif3z.vercel.app/" target="_blank" rel="noopener" class="project__overlay">
+                            <span class="project__overlay-text">visitar projeto →</span>
+                        </a>
                     </div>
                     <div class="project__info">
                         <div class="project__meta">
-                            <span class="project__cat">web app</span>
-                            <span class="project__year">2025</span>
+                            <span class="project__cat">branding / web design</span>
+                            <span class="project__year">live</span>
                         </div>
-                        <h3 class="project__title">Dashboard Analytics</h3>
-                        <p class="project__desc">Painel completo com dados em tempo real, gráficos interativos e relatórios automatizados.</p>
+                        <h3 class="project__title">Bule de Chá</h3>
+                        <p class="project__desc">Projeto de identidade visual e presença digital para uma casa de chás artesanais, com foco em sofisticação, bem-estar e produtos premium.</p>
                         <div class="project__tech">
-                            <code>react</code>
-                            <code>chart.js</code>
-                            <code>postgresql</code>
+                            <code>figma</code>
+                            <code>html5</code>
+                            <code>javascript</code>
                         </div>
-                        <a href="#contact" class="project__cta">Quero esse nivel de painel →</a>
+                        <a href="https://traeepjmif3z.vercel.app/" target="_blank" rel="noopener" class="project__cta">Ver projeto online →</a>
                     </div>
                 </article>
 
                 <!-- Project 3 -->
-                <article class="project" data-category="web" data-aos>
+                <article class="project" data-category="ecommerce" data-aos>
                     <div class="project__preview">
-                        <img src="assets/portfolio-landing.png" alt="Landing Page SaaS">
-                        <div class="project__overlay">
-                            <span class="project__overlay-text">ver detalhes →</span>
-                        </div>
+                        <img src="assets/afrodite.png" alt="Afrodite" loading="lazy" decoding="async">
+                        <a href="https://traeaafroditecq94.vercel.app/" target="_blank" rel="noopener" class="project__overlay">
+                            <span class="project__overlay-text">visitar projeto →</span>
+                        </a>
                     </div>
                     <div class="project__info">
                         <div class="project__meta">
-                            <span class="project__cat">landing page</span>
-                            <span class="project__year">2026</span>
+                            <span class="project__cat">e-commerce / moda</span>
+                            <span class="project__year">live</span>
                         </div>
-                        <h3 class="project__title">Landing Page SaaS</h3>
-                        <p class="project__desc">LP de alta conversão com animações sofisticadas e A/B testing integrado.</p>
+                        <h3 class="project__title">Afrodite</h3>
+                        <p class="project__desc">Loja virtual de moda feminina com experiência focada em conversão, vitrine clean, filtros avançados e checkout otimizado.</p>
                         <div class="project__tech">
-                            <code>next.js</code>
-                            <code>gsap</code>
-                            <code>vercel</code>
+                            <code>shopify</code>
+                            <code>liquid</code>
+                            <code>sass</code>
                         </div>
-                        <a href="#contact" class="project__cta">Quero uma landing de alta conversao →</a>
+                        <a href="https://traeaafroditecq94.vercel.app/" target="_blank" rel="noopener" class="project__cta">Ver projeto online →</a>
                     </div>
                 </article>
 
-                <!-- Placeholder Projects -->
-                <article class="project project--placeholder" data-category="sistema" data-aos>
-                    <div class="project__preview project__preview--empty">
-                        <div class="project__empty-content">
-                            <span class="project__empty-icon">{  }</span>
-                            <span class="project__empty-text">seu projeto aqui</span>
-                        </div>
+                <!-- Project 4 -->
+                <article class="project" data-category="branding" data-aos>
+                    <div class="project__preview">
+                        <img src="assets/ygorx.png" alt="YgorX" loading="lazy" decoding="async">
+                        <a href="https://ygorx.vercel.app/" target="_blank" rel="noopener" class="project__overlay">
+                            <span class="project__overlay-text">visitar projeto →</span>
+                        </a>
                     </div>
                     <div class="project__info">
                         <div class="project__meta">
-                            <span class="project__cat">sistema</span>
-                            <span class="project__year">2026</span>
+                            <span class="project__cat">portfolio / personal branding</span>
+                            <span class="project__year">live</span>
                         </div>
-                        <h3 class="project__title">Sistema de Gestão</h3>
-                        <p class="project__desc">ERP completo para gestão empresarial com módulos de finanças, estoque e RH.</p>
+                        <h3 class="project__title">YgorX</h3>
+                        <p class="project__desc">Landing page de personal branding para Pro Player e empreendedor, com visual dark minimalista e foco em autoridade e conversão.</p>
                         <div class="project__tech">
-                            <code>node.js</code>
-                            <code>mysql</code>
-                            <code>docker</code>
+                            <code>react</code>
+                            <code>framer motion</code>
+                            <code>tailwind css</code>
                         </div>
-                        <a href="#contact" class="project__cta">Quero tirar esse sistema do papel →</a>
-                    </div>
-                </article>
-
-                <article class="project project--placeholder" data-category="mobile" data-aos>
-                    <div class="project__preview project__preview--empty">
-                        <div class="project__empty-content">
-                            <span class="project__empty-icon">&lt;/&gt;</span>
-                            <span class="project__empty-text">seu projeto aqui</span>
-                        </div>
-                    </div>
-                    <div class="project__info">
-                        <div class="project__meta">
-                            <span class="project__cat">mobile app</span>
-                            <span class="project__year">2026</span>
-                        </div>
-                        <h3 class="project__title">App Delivery</h3>
-                        <p class="project__desc">Aplicativo de delivery com rastreamento em tempo real e avaliações.</p>
-                        <div class="project__tech">
-                            <code>flutter</code>
-                            <code>firebase</code>
-                            <code>maps</code>
-                        </div>
-                        <a href="#contact" class="project__cta">Quero conversar sobre meu app →</a>
+                        <a href="https://ygorx.vercel.app/" target="_blank" rel="noopener" class="project__cta">Ver projeto online →</a>
                     </div>
                 </article>
             </div>
@@ -526,9 +510,9 @@
             <div class="reviews__controls">
                 <button class="reviews__btn" id="prevReview" aria-label="Anterior">←</button>
                 <div class="reviews__dots" id="reviewDots">
-                    <button class="reviews__dot active" data-idx="0"></button>
-                    <button class="reviews__dot" data-idx="1"></button>
-                    <button class="reviews__dot" data-idx="2"></button>
+                    <button class="reviews__dot active" data-idx="0" aria-label="Ir para depoimento 1"></button>
+                    <button class="reviews__dot" data-idx="1" aria-label="Ir para depoimento 2"></button>
+                    <button class="reviews__dot" data-idx="2" aria-label="Ir para depoimento 3"></button>
                 </div>
                 <button class="reviews__btn" id="nextReview" aria-label="Próximo">→</button>
             </div>
@@ -614,6 +598,7 @@
                     <button type="submit" class="btn btn--primary btn--full" id="submitBtn">
                         Enviar mensagem →
                     </button>
+                    <p class="sr-only" id="formStatus" aria-live="polite"></p>
                 </form>
 
                 <aside class="contact__aside">
@@ -677,11 +662,11 @@
         </div>
     </footer>
 
-    <div class="smart-offer" id="smartOffer" hidden>
+    <div class="smart-offer" id="smartOffer" hidden role="dialog" aria-labelledby="smartOfferTitle" aria-describedby="smartOfferText">
         <button class="smart-offer__close" id="smartOfferClose" aria-label="Fechar oferta">×</button>
         <span class="smart-offer__label">acao rapida</span>
-        <h3 class="smart-offer__title">Seu projeto nao precisa esperar mais uma semana.</h3>
-        <p class="smart-offer__text">Se fizer sentido para voce, o caminho mais rapido e abrir uma conversa agora e sair daqui com o proximo passo definido.</p>
+        <h3 class="smart-offer__title" id="smartOfferTitle">Seu projeto nao precisa esperar mais uma semana.</h3>
+        <p class="smart-offer__text" id="smartOfferText">Se fizer sentido para voce, o caminho mais rapido e abrir uma conversa agora e sair daqui com o proximo passo definido.</p>
         <div class="smart-offer__actions">
             <a href="https://wa.me/5500000000000?text=Oi%2C%20quero%20iniciar%20um%20projeto%20com%20a%20Deiro%27s%20Dev." class="btn btn--primary" target="_blank" rel="noopener">Entre em contato</a>
             <a href="#contact" class="btn btn--ghost">Abrir formulario</a>
