@@ -215,20 +215,42 @@ function initContactForm() {
         btn.style.opacity = '0.6';
         if (status) status.textContent = 'Enviando mensagem.';
 
-        await new Promise(r => setTimeout(r, 1800));
+        try {
+            const formData = new FormData(form);
+            const response = await fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                },
+                body: formData,
+            });
 
-        btn.textContent = '✔ mensagem enviada!';
-        btn.style.opacity = '1';
-        btn.style.background = '#255AE6';
-        if (status) status.textContent = 'Mensagem enviada com sucesso.';
+            const result = await response.json();
 
-        setTimeout(() => {
-            btn.textContent = original;
-            btn.disabled = false;
-            btn.style.background = '';
+            if (!response.ok || !['true', true].includes(result.success)) {
+                throw new Error(result.message || 'Falha ao enviar a mensagem.');
+            }
+
+            btn.textContent = '✔ mensagem enviada!';
+            btn.style.opacity = '1';
+            btn.style.background = '#255AE6';
+            if (status) status.textContent = 'Mensagem enviada com sucesso.';
             form.reset();
-            if (status) status.textContent = '';
-        }, 3000);
+            setTimeout(() => {
+                btn.textContent = original;
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.style.background = '';
+                if (status) status.textContent = '';
+            }, 3000);
+        } catch (error) {
+            btn.textContent = 'Tentar novamente';
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btn.style.background = '';
+            if (status) status.textContent = 'Nao foi possivel enviar agora. Tente novamente em instantes.';
+            console.error(error);
+        }
     });
 }
 
