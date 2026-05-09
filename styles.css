@@ -1443,7 +1443,7 @@ select:focus-visible {
 
 @media (max-width: 480px) {
     .nav__logo-image { height: 34px; }
-    .hero__title { font-size: 2.2rem; }
+    .hero__title { font-size: 1.95rem; }
     .hero__actions { flex-direction: column; }
     .btn { width: 100%; justify-content: center; }
     .terminal__body { font-size: 0.75rem; min-height: 260px; }
@@ -1473,6 +1473,23 @@ select:focus-visible {
         min-height: auto;
         padding: calc(var(--nav-h) + 24px) 16px 32px;
     }
+    .hero__tag {
+        margin-bottom: 20px;
+    }
+    .hero__title {
+        font-size: 1.95rem;
+        line-height: 1.08;
+        margin-bottom: 18px;
+        text-wrap: balance;
+    }
+    .hero__title-accent {
+        display: inline;
+    }
+    .hero__desc {
+        font-size: 1rem;
+        line-height: 1.65;
+        margin-bottom: 28px;
+    }
     .hero__grid,
     .services__grid,
     .work__grid,
@@ -1483,15 +1500,26 @@ select:focus-visible {
     }
     .hero__grid,
     .about__grid {
-        gap: 32px;
+        gap: 28px;
     }
     .hero__desc,
     .section-cta__text {
         max-width: none;
     }
     .hero__metrics {
-        flex-direction: column;
-        gap: 20px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        align-items: start;
+    }
+    .metric__value {
+        font-size: 1.7rem;
+    }
+    .metric__label {
+        font-size: 0.72rem;
+    }
+    .metric__label small {
+        font-size: 0.66rem;
     }
     .hero__actions,
     .about__cta,
@@ -1501,15 +1529,35 @@ select:focus-visible {
         align-items: stretch;
     }
     .terminal__body {
-        min-height: 260px;
-        font-size: 0.75rem;
+        min-height: auto;
+        font-size: 0.72rem;
         overflow-x: auto;
+        padding: 16px;
+        line-height: 1.65;
     }
     .terminal__line {
-        min-width: max-content;
+        min-width: 0;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .terminal__line--output {
+        padding-left: 14px;
+    }
+    .terminal__text,
+    .terminal__text--cmd,
+    .terminal__text--dir,
+    .terminal__text--success {
+        white-space: normal;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+    }
+    .terminal__text--dir {
+        margin-right: 8px;
     }
     .section-heading {
         margin-bottom: 32px;
+        font-size: clamp(1.9rem, 9vw, 2.5rem);
     }
     .services,
     .work,
@@ -1525,6 +1573,15 @@ select:focus-visible {
     .contact__form,
     .cta__inner {
         padding: 24px;
+    }
+    .svc-card {
+        padding: 24px 20px;
+    }
+    .svc-card__title {
+        font-size: 1.15rem;
+    }
+    .svc-card__desc {
+        font-size: 0.9rem;
     }
     .work__filters {
         flex-wrap: nowrap;
@@ -1543,6 +1600,9 @@ select:focus-visible {
         flex-direction: column;
         gap: 4px;
     }
+    .project__title {
+        font-size: 1.05rem;
+    }
     .process__steps {
         flex-direction: column;
     }
@@ -1551,11 +1611,15 @@ select:focus-visible {
         padding: 8px 0;
         justify-content: center;
     }
+    .process__step {
+        min-width: 0;
+        padding: 24px 20px;
+    }
     .reviews__track {
-        min-height: 320px;
+        min-height: 360px;
     }
     .reviews__controls {
-        margin-top: 344px;
+        margin-top: 384px;
         gap: 12px;
     }
     .review__quote {
@@ -1575,6 +1639,10 @@ select:focus-visible {
     .footer__bottom {
         gap: 8px;
     }
+    .contact__card-value {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
     .smart-offer {
         left: 16px;
         right: 16px;
@@ -1589,6 +1657,51 @@ select:focus-visible {
     }
 }
 
+@media (max-width: 374px) {
+    .nav__inner {
+        padding: 10px 12px;
+    }
+    .nav__logo-image {
+        height: 28px;
+    }
+    .hero {
+        padding: calc(var(--nav-h) + 18px) 12px 28px;
+    }
+    .hero__title {
+        font-size: 1.8rem;
+    }
+    .hero__desc {
+        font-size: 0.96rem;
+    }
+    .hero__metrics {
+        gap: 10px;
+    }
+    .metric__value {
+        font-size: 1.5rem;
+    }
+    .metric__label {
+        font-size: 0.68rem;
+    }
+    .metric__label small {
+        font-size: 0.62rem;
+    }
+    .hero__actions .btn,
+    .section-cta__actions .btn {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+    .terminal__bar,
+    .terminal__body,
+    .contact__form,
+    .review,
+    .svc-card,
+    .process__step,
+    .cta__inner {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+
 @media (min-width: 375px) and (max-width: 767px) {
     .container,
     .nav__inner,
@@ -1597,7 +1710,7 @@ select:focus-visible {
         padding-right: 20px;
     }
     .hero__title {
-        font-size: 2.35rem;
+        font-size: 2.05rem;
     }
 }
 
@@ -1609,13 +1722,13 @@ select:focus-visible {
         padding-right: 24px;
     }
     .hero__title {
-        font-size: 2.55rem;
+        font-size: 2.2rem;
     }
     .reviews__track {
-        min-height: 290px;
+        min-height: 340px;
     }
     .reviews__controls {
-        margin-top: 308px;
+        margin-top: 360px;
     }
 }
 
