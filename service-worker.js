@@ -1,8 +1,10 @@
-const ASSET_VERSION = '20260519-success-modal';
+const ASSET_VERSION = '20260519-thank-you';
 const CACHE_NAME = `deiros-dev-v3-${ASSET_VERSION}`;
 const APP_SHELL = [
   './',
   './index.html',
+  './obrigado/',
+  './obrigado/index.html',
   `./styles.css?v=${ASSET_VERSION}`,
   `./script.js?v=${ASSET_VERSION}`,
   './manifest.webmanifest',
@@ -55,11 +57,12 @@ self.addEventListener('fetch', (event) => {
         .then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
             const responseClone = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put('./index.html', responseClone));
+            const cacheKey = requestUrl.pathname.startsWith('/obrigado') ? './obrigado/index.html' : './index.html';
+            caches.open(CACHE_NAME).then((cache) => cache.put(cacheKey, responseClone));
           }
           return networkResponse;
         })
-        .catch(() => caches.match('./index.html'))
+        .catch(() => caches.match(requestUrl.pathname.startsWith('/obrigado') ? './obrigado/index.html' : './index.html'))
     );
     return;
   }
