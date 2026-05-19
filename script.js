@@ -193,6 +193,8 @@ function initContactForm() {
     const form = document.getElementById('contactForm');
     const btn = document.getElementById('submitBtn');
     const status = document.getElementById('formStatus');
+    const successModal = document.getElementById('successModal');
+    const successModalClose = document.getElementById('successModalClose');
     if (!form) return;
 
     const setStatus = (message, type = '') => {
@@ -201,6 +203,30 @@ function initContactForm() {
         status.classList.toggle('is-success', type === 'success');
         status.classList.toggle('is-error', type === 'error');
     };
+
+    const closeSuccessModal = () => {
+        if (!successModal) return;
+        successModal.hidden = true;
+        document.body.style.overflow = '';
+        if (btn) btn.focus();
+    };
+
+    const openSuccessModal = () => {
+        if (!successModal) return;
+        successModal.hidden = false;
+        document.body.style.overflow = 'hidden';
+        if (successModalClose) successModalClose.focus();
+    };
+
+    if (successModal) {
+        successModal.querySelectorAll('[data-success-close]').forEach((trigger) => {
+            trigger.addEventListener('click', closeSuccessModal);
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !successModal.hidden) closeSuccessModal();
+        });
+    }
 
     // Phone mask
     const phone = document.getElementById('phone');
@@ -244,6 +270,7 @@ function initContactForm() {
             btn.style.background = '#255AE6';
             setStatus('Mensagem enviada com sucesso. Vou te responder em breve.', 'success');
             form.reset();
+            openSuccessModal();
             setTimeout(() => {
                 btn.textContent = original;
                 btn.disabled = false;
@@ -368,7 +395,7 @@ function registerServiceWorker() {
     if (!('serviceWorker' in navigator)) return;
 
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js?v=20260519-form-feedback', { updateViaCache: 'none' }).catch((error) => {
+        navigator.serviceWorker.register('./service-worker.js?v=20260519-success-modal', { updateViaCache: 'none' }).catch((error) => {
             console.warn('Service worker registration failed.', error);
         });
     });

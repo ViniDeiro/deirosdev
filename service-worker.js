@@ -1,4 +1,4 @@
-const ASSET_VERSION = '20260519-form-feedback';
+const ASSET_VERSION = '20260519-success-modal';
 const CACHE_NAME = `deiros-dev-v3-${ASSET_VERSION}`;
 const APP_SHELL = [
   './',
