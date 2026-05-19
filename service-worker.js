@@ -1,9 +1,10 @@
-const CACHE_NAME = 'deiros-dev-v2';
+const ASSET_VERSION = '20260519-pricing-cache-fix';
+const CACHE_NAME = `deiros-dev-v3-${ASSET_VERSION}`;
 const APP_SHELL = [
   './',
   './index.html',
-  './styles.css',
-  './script.js',
+  `./styles.css?v=${ASSET_VERSION}`,
+  `./script.js?v=${ASSET_VERSION}`,
   './manifest.webmanifest',
   './logo transparente.png',
   './assets/rpx.png',
@@ -35,6 +36,15 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
+  const requestUrl = new URL(event.request.url);
+  const isSameOrigin = requestUrl.origin === self.location.origin;
+  const isVersionedAsset =
+    isSameOrigin &&
+    (event.request.destination === 'style' ||
+      event.request.destination === 'script' ||
+      requestUrl.pathname.endsWith('.css') ||
+      requestUrl.pathname.endsWith('.js'));
+
   const isNavigationRequest =
     event.request.mode === 'navigate' ||
     (event.request.headers.get('accept') || '').includes('text/html');
@@ -50,6 +60,21 @@ self.addEventListener('fetch', (event) => {
           return networkResponse;
         })
         .catch(() => caches.match('./index.html'))
+    );
+    return;
+  }
+
+  if (isVersionedAsset) {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseClone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match(event.request))
     );
     return;
   }
