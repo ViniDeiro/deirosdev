@@ -195,6 +195,13 @@ function initContactForm() {
     const status = document.getElementById('formStatus');
     if (!form) return;
 
+    const setStatus = (message, type = '') => {
+        if (!status) return;
+        status.textContent = message;
+        status.classList.toggle('is-success', type === 'success');
+        status.classList.toggle('is-error', type === 'error');
+    };
+
     // Phone mask
     const phone = document.getElementById('phone');
     if (phone) {
@@ -213,7 +220,7 @@ function initContactForm() {
         btn.textContent = 'enviando...';
         btn.disabled = true;
         btn.style.opacity = '0.6';
-        if (status) status.textContent = 'Enviando mensagem.';
+        setStatus('Enviando mensagem.');
 
         try {
             const formData = new FormData(form);
@@ -225,30 +232,31 @@ function initContactForm() {
                 body: formData,
             });
 
-            const result = await response.json();
+            const contentType = response.headers.get('content-type') || '';
+            const result = contentType.includes('application/json') ? await response.json() : {};
 
-            if (!response.ok || !['true', true].includes(result.success)) {
+            if (!response.ok || (contentType.includes('application/json') && !['true', true].includes(result.success))) {
                 throw new Error(result.message || 'Falha ao enviar a mensagem.');
             }
 
             btn.textContent = '✔ mensagem enviada!';
             btn.style.opacity = '1';
             btn.style.background = '#255AE6';
-            if (status) status.textContent = 'Mensagem enviada com sucesso.';
+            setStatus('Mensagem enviada com sucesso. Vou te responder em breve.', 'success');
             form.reset();
             setTimeout(() => {
                 btn.textContent = original;
                 btn.disabled = false;
                 btn.style.opacity = '1';
                 btn.style.background = '';
-                if (status) status.textContent = '';
+                setStatus('');
             }, 3000);
         } catch (error) {
             btn.textContent = 'Tentar novamente';
             btn.disabled = false;
             btn.style.opacity = '1';
             btn.style.background = '';
-            if (status) status.textContent = 'Nao foi possivel enviar agora. Tente novamente em instantes.';
+            setStatus('Nao foi possivel enviar agora. Tente novamente em instantes ou fale pelo WhatsApp.', 'error');
             console.error(error);
         }
     });
@@ -360,7 +368,7 @@ function registerServiceWorker() {
     if (!('serviceWorker' in navigator)) return;
 
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js?v=20260519-pricing-cache-fix', { updateViaCache: 'none' }).catch((error) => {
+        navigator.serviceWorker.register('./service-worker.js?v=20260519-form-feedback', { updateViaCache: 'none' }).catch((error) => {
             console.warn('Service worker registration failed.', error);
         });
     });

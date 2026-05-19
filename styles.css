@@ -1405,6 +1405,16 @@ select:focus-visible {
 }
 .form-field select option { background: var(--bg-input); color: var(--text); }
 .form-field textarea { resize: vertical; min-height: 110px; }
+.form-status {
+    min-height: 22px;
+    margin-top: 14px;
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+.form-status.is-success { color: var(--accent); }
+.form-status.is-error { color: #ff6b6b; }
 
 .contact__aside {
     display: flex;
