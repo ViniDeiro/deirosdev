@@ -157,36 +157,87 @@ function initReviews() {
 /* ── Portfolio Filters ── */
 function initFilters() {
     const btns = document.querySelectorAll('.work__filter');
-    const cards = document.querySelectorAll('.project');
+    const cards = Array.from(document.querySelectorAll('.project'));
+    const pagination = document.getElementById('workPagination');
+    const perPage = 6;
+    let currentFilter = 'all';
+    let currentPage = 1;
+
+    const getFilteredCards = () => cards.filter((card) => {
+        const cat = card.dataset.category;
+        return currentFilter === 'all' || cat === currentFilter;
+    });
+
+    const renderPagination = (totalPages) => {
+        if (!pagination) return;
+        pagination.innerHTML = '';
+        pagination.hidden = totalPages <= 1;
+        if (totalPages <= 1) return;
+
+        const createButton = (label, page, options = {}) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'work__page';
+            button.textContent = label;
+            if (options.active) button.classList.add('active');
+            if (options.disabled) button.disabled = true;
+            button.addEventListener('click', () => {
+                if (button.disabled || currentPage === page) return;
+                currentPage = page;
+                renderProjects();
+                document.getElementById('work')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+            return button;
+        };
+
+        pagination.appendChild(createButton('←', Math.max(1, currentPage - 1), { disabled: currentPage === 1 }));
+        for (let page = 1; page <= totalPages; page += 1) {
+            pagination.appendChild(createButton(String(page), page, { active: page === currentPage }));
+        }
+        pagination.appendChild(createButton('→', Math.min(totalPages, currentPage + 1), { disabled: currentPage === totalPages }));
+    };
+
+    const renderProjects = () => {
+        const filteredCards = getFilteredCards();
+        const totalPages = Math.max(1, Math.ceil(filteredCards.length / perPage));
+        currentPage = Math.min(currentPage, totalPages);
+        const start = (currentPage - 1) * perPage;
+        const visibleCards = new Set(filteredCards.slice(start, start + perPage));
+
+        cards.forEach((card, i) => {
+            const show = visibleCards.has(card);
+
+            if (show) {
+                card.style.display = '';
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(16px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.35s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, i * 35);
+            } else {
+                card.style.transition = 'all 0.2s ease';
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.97)';
+                setTimeout(() => { card.style.display = 'none'; }, 200);
+            }
+        });
+
+        renderPagination(totalPages);
+    };
 
     btns.forEach(btn => {
         btn.addEventListener('click', () => {
             btns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-
-            const filter = btn.dataset.filter;
-            cards.forEach((card, i) => {
-                const cat = card.dataset.category;
-                const show = filter === 'all' || cat === filter;
-
-                if (show) {
-                    card.style.display = '';
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(16px)';
-                    setTimeout(() => {
-                        card.style.transition = 'all 0.35s ease';
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    }, i * 60);
-                } else {
-                    card.style.transition = 'all 0.25s ease';
-                    card.style.opacity = '0';
-                    card.style.transform = 'scale(0.97)';
-                    setTimeout(() => { card.style.display = 'none'; }, 250);
-                }
-            });
+            currentFilter = btn.dataset.filter;
+            currentPage = 1;
+            renderProjects();
         });
     });
+
+    renderProjects();
 }
 
 /* ── Contact Form ── */
@@ -402,7 +453,7 @@ function registerServiceWorker() {
     if (!('serviceWorker' in navigator)) return;
 
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js?v=20260522-bluevault', { updateViaCache: 'none' }).catch((error) => {
+        navigator.serviceWorker.register('./service-worker.js?v=20260522-portfolio-paginado', { updateViaCache: 'none' }).catch((error) => {
             console.warn('Service worker registration failed.', error);
         });
     });

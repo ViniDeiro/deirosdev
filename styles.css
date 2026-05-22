@@ -680,6 +680,39 @@ select:focus-visible {
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
 }
+.work__pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+}
+.work__page {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    transition: all var(--transition);
+}
+.work__page:hover:not(:disabled) {
+    border-color: var(--accent-border);
+    color: var(--accent);
+}
+.work__page.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+}
+.work__page:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
 
 /* Project Card */
 .project {
