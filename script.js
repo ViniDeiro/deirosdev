@@ -12,10 +12,32 @@ document.addEventListener('DOMContentLoaded', () => {
     initPricingModal();
     initContactForm();
     initSmoothScroll();
+    initSectionRoutes();
     initConversionLayer();
     initCoreWebVitals();
     registerServiceWorker();
 });
+
+const SECTION_ROUTES = {
+    '/': 'home',
+    '/servicos/': 'services',
+    '/portfolio/': 'work',
+    '/portifolio/': 'work',
+    '/precos/': 'pricing',
+    '/sobre/': 'about',
+    '/contato/': 'contact',
+};
+
+function normalizePath(pathname) {
+    if (!pathname || pathname === '/index.html') return '/';
+    return pathname.endsWith('/') ? pathname : `${pathname}/`;
+}
+
+function scrollToSection(sectionId, behavior = 'smooth') {
+    const target = document.getElementById(sectionId);
+    if (!target) return;
+    target.scrollIntoView({ behavior, block: 'start' });
+}
 
 /* ── Navigation ── */
 function initNav() {
@@ -349,12 +371,42 @@ function initContactForm() {
 
 /* ── Smooth Scroll ── */
 function initSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
+    document.querySelectorAll('a[href^="#"], a[href^="/"]').forEach(a => {
         a.addEventListener('click', (e) => {
+            const href = a.getAttribute('href');
+            if (href.startsWith('#')) {
+                const sectionId = href.slice(1);
+                if (!sectionId) return;
+
+                e.preventDefault();
+                scrollToSection(sectionId);
+                return;
+            }
+
+            const url = new URL(href, window.location.origin);
+            if (url.origin !== window.location.origin) return;
+
+            const routePath = normalizePath(url.pathname);
+            const sectionId = SECTION_ROUTES[routePath];
+            if (!sectionId) return;
+
             e.preventDefault();
-            const target = document.querySelector(a.getAttribute('href'));
-            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            scrollToSection(sectionId);
+            window.history.pushState({ sectionId }, '', routePath);
         });
+    });
+}
+
+function initSectionRoutes() {
+    const path = normalizePath(window.location.pathname);
+    const sectionId = SECTION_ROUTES[path];
+    if (sectionId && sectionId !== 'home') {
+        window.setTimeout(() => scrollToSection(sectionId, 'auto'), 80);
+    }
+
+    window.addEventListener('popstate', () => {
+        const nextSectionId = SECTION_ROUTES[normalizePath(window.location.pathname)] || 'home';
+        scrollToSection(nextSectionId);
     });
 }
 
@@ -453,7 +505,7 @@ function registerServiceWorker() {
     if (!('serviceWorker' in navigator)) return;
 
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js?v=20260522-portfolio-paginado', { updateViaCache: 'none' }).catch((error) => {
+        navigator.serviceWorker.register('./service-worker.js?v=20260522-section-routes', { updateViaCache: 'none' }).catch((error) => {
             console.warn('Service worker registration failed.', error);
         });
     });

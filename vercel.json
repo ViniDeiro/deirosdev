@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    { "source": "/servicos", "destination": "/index.html" },
+    { "source": "/servicos/", "destination": "/index.html" },
+    { "source": "/portfolio", "destination": "/index.html" },
+    { "source": "/portfolio/", "destination": "/index.html" },
+    { "source": "/portifolio", "destination": "/index.html" },
+    { "source": "/portifolio/", "destination": "/index.html" },
+    { "source": "/precos", "destination": "/index.html" },
+    { "source": "/precos/", "destination": "/index.html" },
+    { "source": "/sobre", "destination": "/index.html" },
+    { "source": "/sobre/", "destination": "/index.html" },
+    { "source": "/contato", "destination": "/index.html" },
+    { "source": "/contato/", "destination": "/index.html" }
+  ]
+}

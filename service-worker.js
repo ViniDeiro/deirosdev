@@ -1,4 +1,4 @@
-const ASSET_VERSION = '20260522-portfolio-paginado';
+const ASSET_VERSION = '20260522-section-routes';
 const CACHE_NAME = `deiros-dev-v3-${ASSET_VERSION}`;
 const APP_SHELL = [
   './',
