@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initCountUp();
     initReviews();
     initFilters();
+    initPricingModal();
     initContactForm();
     initSmoothScroll();
     initConversionLayer();
@@ -189,6 +190,46 @@ function initFilters() {
 }
 
 /* ── Contact Form ── */
+function initPricingModal() {
+    const modal = document.getElementById('pricingModal');
+    const openers = document.querySelectorAll('[data-pricing-modal]');
+    const closers = document.querySelectorAll('[data-pricing-close]');
+    const planTitle = document.getElementById('pricingPlanTitle');
+    const planDesc = document.getElementById('pricingPlanDesc');
+    if (!modal || !openers.length) return;
+
+    let lastFocus = null;
+
+    const openModal = (trigger) => {
+        lastFocus = trigger;
+        if (planTitle) planTitle.textContent = trigger.dataset.planTitle || 'Detalhes do pacote';
+        if (planDesc) planDesc.textContent = trigger.dataset.planDesc || '';
+        modal.hidden = false;
+        document.body.style.overflow = 'hidden';
+        const close = modal.querySelector('.pricing-modal__close');
+        if (close) close.focus();
+    };
+
+    const closeModal = () => {
+        modal.hidden = true;
+        document.body.style.overflow = '';
+        if (lastFocus) lastFocus.focus();
+    };
+
+    openers.forEach((button) => {
+        button.addEventListener('click', () => openModal(button));
+    });
+
+    closers.forEach((button) => {
+        button.addEventListener('click', closeModal);
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !modal.hidden) closeModal();
+    });
+}
+
+/* ── Contact Form ── */
 function initContactForm() {
     const form = document.getElementById('contactForm');
     const btn = document.getElementById('submitBtn');
@@ -293,7 +334,7 @@ function initSmartOffer() {
         document.removeEventListener('mouseout', handleExitIntent);
     };
 
-    const delay = 18000;
+    const delay = 9000;
     const timer = window.setTimeout(showOffer, delay);
 
     const handleExitIntent = (event) => {
@@ -361,7 +402,7 @@ function registerServiceWorker() {
     if (!('serviceWorker' in navigator)) return;
 
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js?v=20260519-thank-you', { updateViaCache: 'none' }).catch((error) => {
+        navigator.serviceWorker.register('./service-worker.js?v=20260522-total-compacto', { updateViaCache: 'none' }).catch((error) => {
             console.warn('Service worker registration failed.', error);
         });
     });
