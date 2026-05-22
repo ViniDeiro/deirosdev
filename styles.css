@@ -816,6 +816,17 @@ select:focus-visible {
     opacity: 0.85;
     transform: translateX(2px);
 }
+.project__overlay--private {
+    cursor: default;
+}
+.project__cta--private {
+    color: var(--text-muted);
+    cursor: default;
+}
+.project__cta--private:hover {
+    opacity: 1;
+    transform: none;
+}
 
 /* ==========================================
    ABOUT

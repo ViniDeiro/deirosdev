@@ -1,4 +1,4 @@
-const ASSET_VERSION = '20260522-total-compacto';
+const ASSET_VERSION = '20260522-projetos-fechados';
 const CACHE_NAME = `deiros-dev-v3-${ASSET_VERSION}`;
 const APP_SHELL = [
   './',
@@ -11,6 +11,8 @@ const APP_SHELL = [
   './logo transparente.png',
   './assets/rpx.png',
   './assets/atelie-ailda-deiro.jpeg',
+  './assets/erp-empresa.jpeg',
+  './assets/curseflix.jpeg',
   './assets/buledecha.png',
   './assets/afrodite.png',
   './assets/ygorx.png',
