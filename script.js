@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initReviews();
     initFilters();
     initPricingModal();
-    initPromoCountdown();
     initContactForm();
     initSmoothScroll();
     initSectionRoutes();
@@ -301,44 +300,6 @@ function initPricingModal() {
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' && !modal.hidden) closeModal();
     });
-}
-
-function initPromoCountdown() {
-    const countdowns = document.querySelectorAll('[data-promo-countdown]');
-    if (!countdowns.length) return;
-
-    const storageKey = 'deiros-landing-promo-ends-at';
-    const duration = 24 * 60 * 60 * 1000;
-    const now = Date.now();
-    let endsAt = Number(localStorage.getItem(storageKey));
-
-    if (!Number.isFinite(endsAt) || endsAt <= now) {
-        endsAt = now + duration;
-        localStorage.setItem(storageKey, String(endsAt));
-    }
-
-    const format = (value) => String(value).padStart(2, '0');
-
-    const render = () => {
-        const remaining = Math.max(0, endsAt - Date.now());
-        const totalSeconds = Math.floor(remaining / 1000);
-        const hours = Math.floor(totalSeconds / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const seconds = totalSeconds % 60;
-
-        const markup = `<span>${format(hours)}</span><b>:</b><span>${format(minutes)}</span><b>:</b><span>${format(seconds)}</span>`;
-        countdowns.forEach((countdown) => {
-            countdown.innerHTML = markup;
-        });
-
-        if (remaining <= 0) {
-            endsAt = Date.now() + duration;
-            localStorage.setItem(storageKey, String(endsAt));
-        }
-    };
-
-    render();
-    window.setInterval(render, 1000);
 }
 
 /* ── Contact Form ── */
