@@ -11,6 +11,7 @@ const APP_SHELL = [
   './logo transparente.png',
   './assets/rpx.png',
   './assets/atelie-ailda-deiro.jpeg',
+  './assets/prime imoveis.jpeg',
   './assets/bluevault-landing.jpeg',
   './assets/erp-empresa.jpeg',
   './assets/curseflix.jpeg',
