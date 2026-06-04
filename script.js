@@ -3,12 +3,16 @@
    ========================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
+    placePricingAfterFeaturedWork();
+    placeReviewsAfterPricing();
     initNav();
     initMobileMenu();
     initScrollAnimations();
     initCountUp();
+    initFeaturedCarousel();
     initReviews();
     initFilters();
+    initPricingSwitcher();
     initPricingModal();
     initPromoCountdown();
     initContactForm();
@@ -18,6 +22,22 @@ document.addEventListener('DOMContentLoaded', () => {
     initCoreWebVitals();
     registerServiceWorker();
 });
+
+function placePricingAfterFeaturedWork() {
+    const featuredWork = document.querySelector('.featured-work');
+    const pricing = document.getElementById('pricing');
+    if (!featuredWork || !pricing) return;
+
+    featuredWork.insertAdjacentElement('afterend', pricing);
+}
+
+function placeReviewsAfterPricing() {
+    const pricing = document.getElementById('pricing');
+    const reviews = document.querySelector('.reviews');
+    if (!pricing || !reviews) return;
+
+    pricing.insertAdjacentElement('afterend', reviews);
+}
 
 const SECTION_ROUTES = {
     '/': 'home',
@@ -144,10 +164,98 @@ function initCountUp() {
     }
 }
 
+/* ── Featured Projects Carousel ── */
+function initFeaturedCarousel() {
+    const carousel = document.getElementById('featuredCarousel');
+    const viewport = carousel ? carousel.querySelector('.featured-carousel__viewport') : null;
+    const track = document.getElementById('featuredCarouselTrack');
+    const cards = track ? Array.from(track.querySelectorAll('.featured-case')) : [];
+    const dots = document.getElementById('featuredDots');
+    const prev = document.getElementById('featuredPrev');
+    const next = document.getElementById('featuredNext');
+    if (!carousel || !viewport || !track || !cards.length || !dots || !prev || !next) return;
+
+    let index = 0;
+    let perView = 3;
+    let startX = null;
+    let dragged = false;
+
+    const getPerView = () => {
+        if (window.innerWidth < 768) return 1;
+        if (window.innerWidth < 1100) return 2;
+        return 3;
+    };
+
+    const renderDots = (pages) => {
+        dots.innerHTML = '';
+        for (let i = 0; i < pages; i += 1) {
+            const dot = document.createElement('button');
+            dot.className = 'featured-carousel__dot';
+            dot.type = 'button';
+            dot.setAttribute('aria-label', `Ir para grupo de projetos ${i + 1}`);
+            dot.addEventListener('click', () => {
+                index = i;
+                render();
+            });
+            dots.appendChild(dot);
+        }
+    };
+
+    const render = () => {
+        perView = getPerView();
+        const pages = Math.ceil(cards.length / perView);
+        index = Math.min(index, pages - 1);
+        carousel.style.setProperty('--featured-per-view', String(perView));
+        track.style.transform = `translateX(-${index * (viewport.clientWidth + 20)}px)`;
+
+        if (dots.children.length !== pages) renderDots(pages);
+        Array.from(dots.children).forEach((dot, i) => dot.classList.toggle('active', i === index));
+        prev.disabled = index === 0;
+        next.disabled = index === pages - 1;
+    };
+
+    prev.addEventListener('click', () => {
+        index = Math.max(0, index - 1);
+        render();
+    });
+    next.addEventListener('click', () => {
+        index = Math.min(Math.ceil(cards.length / perView) - 1, index + 1);
+        render();
+    });
+    track.addEventListener('pointerdown', (event) => {
+        startX = event.clientX;
+        dragged = false;
+    });
+    track.addEventListener('pointermove', (event) => {
+        if (startX !== null && Math.abs(event.clientX - startX) > 10) dragged = true;
+    });
+    track.addEventListener('pointerup', (event) => {
+        if (startX === null) return;
+        const distance = event.clientX - startX;
+        startX = null;
+        if (Math.abs(distance) < 45) return;
+        if (distance < 0) next.click();
+        else prev.click();
+    });
+    track.addEventListener('pointercancel', () => {
+        startX = null;
+        dragged = false;
+    });
+    track.addEventListener('click', (event) => {
+        if (!dragged) return;
+        event.preventDefault();
+        dragged = false;
+    });
+    window.addEventListener('resize', render);
+
+    render();
+}
+
 /* ── Reviews Slider ── */
 function initReviews() {
     const reviews = document.querySelectorAll('.review');
     const dots = document.querySelectorAll('.reviews__dot');
+    const track = document.getElementById('reviewsTrack');
     const prev = document.getElementById('prevReview');
     const next = document.getElementById('nextReview');
     let idx = 0;
@@ -159,6 +267,7 @@ function initReviews() {
             r.style.transform = j < i ? 'translateX(-40px)' : j > i ? 'translateX(40px)' : 'translateX(0)';
         });
         dots.forEach((d, j) => d.classList.toggle('active', j === i));
+        if (track && reviews[i]) track.style.height = `${reviews[i].offsetHeight}px`;
         idx = i;
     }
 
@@ -174,6 +283,8 @@ function initReviews() {
     if (prev) prev.addEventListener('click', () => { prevSlide(); resetTimer(); });
     dots.forEach(d => d.addEventListener('click', () => { show(parseInt(d.dataset.idx)); resetTimer(); }));
 
+    window.addEventListener('resize', () => show(idx));
+    show(0);
     resetTimer();
 }
 
@@ -261,6 +372,38 @@ function initFilters() {
     });
 
     renderProjects();
+}
+
+function initPricingSwitcher() {
+    const tabs = Array.from(document.querySelectorAll('[data-pricing-mode]'));
+    const panels = Array.from(document.querySelectorAll('[data-pricing-panel]'));
+    if (!tabs.length || !panels.length) return;
+
+    const selectMode = (mode) => {
+        tabs.forEach((tab) => {
+            const active = tab.dataset.pricingMode === mode;
+            tab.classList.toggle('active', active);
+            tab.setAttribute('aria-selected', String(active));
+        });
+
+        panels.forEach((panel) => {
+            const active = panel.dataset.pricingPanel === mode;
+            panel.hidden = !active;
+            panel.classList.toggle('active', active);
+        });
+    };
+
+    tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => selectMode(tab.dataset.pricingMode));
+        tab.addEventListener('keydown', (event) => {
+            if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+            event.preventDefault();
+            const direction = event.key === 'ArrowRight' ? 1 : -1;
+            const next = tabs[(index + direction + tabs.length) % tabs.length];
+            next.focus();
+            selectMode(next.dataset.pricingMode);
+        });
+    });
 }
 
 /* ── Contact Form ── */
