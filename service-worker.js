@@ -1,23 +1,25 @@
-const ASSET_VERSION = '20260522-section-routes';
-const CACHE_NAME = `deiros-dev-v3-${ASSET_VERSION}`;
+const ASSET_VERSION = '20260605-absolute-assets';
+const CACHE_NAME = `deiros-dev-v4-${ASSET_VERSION}`;
 const APP_SHELL = [
-  './',
-  './index.html',
-  './obrigado/',
-  './obrigado/index.html',
-  `./styles.css?v=${ASSET_VERSION}`,
-  `./script.js?v=${ASSET_VERSION}`,
-  './manifest.webmanifest',
-  './logo transparente.png',
-  './assets/rpx.png',
-  './assets/atelie-ailda-deiro.jpeg',
-  './assets/prime imoveis.jpeg',
-  './assets/bluevault-landing.jpeg',
-  './assets/erp-empresa.jpeg',
-  './assets/curseflix.jpeg',
-  './assets/buledecha.png',
-  './assets/afrodite.png',
-  './assets/ygorx.png',
+  '/',
+  '/index.html',
+  '/obrigado/',
+  '/obrigado/index.html',
+  `/styles.css?v=${ASSET_VERSION}`,
+  `/script.js?v=${ASSET_VERSION}`,
+  '/manifest.webmanifest',
+  '/logo transparente.png',
+  '/assets/autoescola.jpeg',
+  '/assets/mobly.jpeg',
+  '/assets/rpx.png',
+  '/assets/atelie-ailda-deiro.jpeg',
+  '/assets/prime imoveis.jpeg',
+  '/assets/bluevault-landing.jpeg',
+  '/assets/erp-empresa.jpeg',
+  '/assets/curseflix.jpeg',
+  '/assets/buledecha.png',
+  '/assets/afrodite.png',
+  '/assets/ygorx.png',
 ];
 
 self.addEventListener('install', (event) => {
@@ -62,12 +64,12 @@ self.addEventListener('fetch', (event) => {
         .then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
             const responseClone = networkResponse.clone();
-            const cacheKey = requestUrl.pathname.startsWith('/obrigado') ? './obrigado/index.html' : './index.html';
+            const cacheKey = requestUrl.pathname.startsWith('/obrigado') ? '/obrigado/index.html' : '/index.html';
             caches.open(CACHE_NAME).then((cache) => cache.put(cacheKey, responseClone));
           }
           return networkResponse;
         })
-        .catch(() => caches.match(requestUrl.pathname.startsWith('/obrigado') ? './obrigado/index.html' : './index.html'))
+        .catch(() => caches.match(requestUrl.pathname.startsWith('/obrigado') ? '/obrigado/index.html' : '/index.html'))
     );
     return;
   }

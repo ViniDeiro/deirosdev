@@ -686,7 +686,7 @@ function registerServiceWorker() {
     if (!('serviceWorker' in navigator)) return;
 
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js?v=20260522-section-routes', { updateViaCache: 'none' }).catch((error) => {
+        navigator.serviceWorker.register('/service-worker.js?v=20260605-absolute-assets', { updateViaCache: 'none' }).catch((error) => {
             console.warn('Service worker registration failed.', error);
         });
     });
