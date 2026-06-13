@@ -1,4 +1,4 @@
-const ASSET_VERSION = '20260605-absolute-assets';
+const ASSET_VERSION = '20260613-conversion-offer';
 const CACHE_NAME = `deiros-dev-v4-${ASSET_VERSION}`;
 const APP_SHELL = [
   '/',
