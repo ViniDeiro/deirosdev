@@ -18,7 +18,6 @@ const APP_SHELL = [
   '/assets/erp-empresa.jpeg',
   '/assets/curseflix.jpeg',
   '/assets/buledecha.png',
-  '/assets/afrodite.png',
   '/assets/ygorx.png',
 ];
 

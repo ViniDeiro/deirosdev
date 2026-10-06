@@ -675,6 +675,10 @@ select:focus-visible {
     border-color: var(--accent-border);
     box-shadow: 0 16px 48px rgba(0,0,0,0.34);
 }
+.featured-case__image-link {
+    display: block;
+    cursor: pointer;
+}
 .featured-case img {
     width: 100%;
     aspect-ratio: 16 / 10;
